@@ -1,0 +1,224 @@
+openapi: 3.0.0
+info:
+  title: Account
+  description: API para gestionar las cuetas de los clientes.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Servidor local
+paths:
+  /account/list:
+    get:
+      summary: Devuelve las cuentas de los clientes del banco
+      operationId: getAccounts
+      description: Obtiene las cuentas.
+      responses:
+        "200":
+          description: "Operación finalizada correctamente"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AccountResponse"
+        "500":
+          description: "Errores técnicos"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Error en el servidor."
+  /account:
+    post:
+      summary: Registra una cuenta de un cliente del banco
+      operationId: registerAccount
+      description: Crea una nueva cuenta de un cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountRequest"
+      responses:
+        "200":
+          description: "Operación finalizada correctamente"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Se registro de forma exitosa."
+        "500":
+          description: "Errores técnicos"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Error en el servidor."
+  /account/{id}:
+    get:
+      summary: Obtiene una cuenta de un cliente del banco
+      operationId: getAccount
+      description: Obtiene una cuenta por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la cuenta
+          schema:
+            type: string
+            example: "6764c17cb1fa3cd77d0644d8"
+      responses:
+        "200":
+          description: "Operación finalizada correctamente"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountResponse"
+        "404":
+          description: "No se encontró la cuenta"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Cuenta no encontrada."
+        "500":
+          description: "Errores técnicos"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Error en el servidor."
+    put:
+      summary: Actualiza una cuenta de un cliente del banco
+      operationId: updateAccount
+      description: Actualiza una cuenta por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la cuenta
+          schema:
+            type: string
+            example: "6764c17cb1fa3cd77d0644d8"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AccountRequest"
+      responses:
+        "200":
+          description: "Operación finalizada correctamente"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Se actualizo de forma exitosa."
+        "500":
+          description: "Errores técnicos"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Error en el servidor."
+    delete:
+      summary: Elimina una cuenta de un cliente del banco
+      operationId: removeAccount
+      description: Elimina una cuenta por ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la cuenta
+          schema:
+            type: string
+            example: "6764c17cb1fa3cd77d0644d8"
+      responses:
+        "500":
+          description: "Errores técnicos"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Error en el servidor."
+components:
+  schemas:
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          description: "Id de la cuenta"
+          type: string
+          example: "6764c17cb1fa3cd77d0644d8"
+        accountNumber:
+          description: "Numero de la cuenta"
+          type: string
+          example: "98745632112365478965"
+        productId:
+          description: "Id del producto a la que pertenece la cuenta"
+          type: string
+          example: "6764c17cb1fa3cd77d0644d8"
+        customerId:
+          description: "Id del cliente de esta cuenta"
+          type: string
+          example: "6764c17cb1fa3cd77d0644d8"
+        currentBalance:
+          description: "Saldo actual de la cuenta"
+          type: string
+          example: "10000"
+        openingDate:
+          description: "Fecha de apertura de la cuenta"
+          type: string
+          example: "21/12/2024"
+        accountStatus:
+          description: "Estado de la cuenta"
+          type: string
+          example: "Activa"
+    AccountRequest:
+      type: object
+      required:
+        - accountNumber
+        - productId
+        - customerId
+        - currentBalance
+        - openingDate
+        - accountStatus
+      properties:
+        accountNumber:
+          description: "Numero de la cuenta"
+          type: string
+          example: "98745632112365478965"
+        productId:
+          description: "Id del producto a la que pertenece la cuenta"
+          type: string
+          example: "6764c17cb1fa3cd77d0644d8"
+        customerId:
+          description: "Id del cliente de esta cuenta"
+          type: string
+          example: "6764c17cb1fa3cd77d0644d8"
+        currentBalance:
+          description: "Saldo actual de la cuenta"
+          type: string
+          example: "10000"
+        openingDate:
+          description: "Fecha de apertura de la cuenta"
+          type: string
+          example: "21/12/2024"
+        accountStatus:
+          description: "Estado de la cuenta"
+          type: string
+          example: "Activa"
